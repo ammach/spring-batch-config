@@ -1,0 +1,17 @@
+
+	
+	 <!-- Transaction Manager -->
+ <bean id="transactionManager"
+    class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+  
+ <!-- jobRepository Declaration -->
+ <bean id="jobRepository"
+  class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+  <property name="transactionManager" ref="transactionManager" />
+ </bean>
+
+ <!-- jobLauncher Declaration -->
+ <bean id="jobLauncher"
+  class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+  <property name="jobRepository" ref="jobRepository" />
+ </bean>

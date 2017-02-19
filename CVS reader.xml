@@ -1,0 +1,54 @@
+<bean id="personneReaderCSV" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="input/personnes.txt" />
+    <property name="lineMapper">
+        <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+            <property name="lineTokenizer">
+                <bean
+                    class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                    <property name="delimiter" value="," />
+                    <property name="names" value="id,nom,prenom,civilite" />
+                </bean>
+            </property>
+            <property name="fieldSetMapper">
+                <bean
+                    class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                    <property name="targetType" value="ideo.springbatch.poc.Personne" />
+                </bean>
+            </property>
+        </bean>
+    </property>
+</bean>
+
+
+
+*********************************************
+Dans cette configuration, nous précisons que :
+
+    - la classe FlatFileItemReader (pour lire un fichier plat) sera utilisée comme ItemReader pour lire notre fichier ;
+    - le séparateur de champ est le caractère « , » ;
+    - chaque ligne est composée des champs : id, nom, prénom et civilité ;
+    - toutes ces informations seront stockées dans la classe Personne.
+	
+
+	
+*********************************************
+
+<bean id="cvsFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+	<!-- write to this csv file -->
+	<property name="resource" value="file:cvs/report.csv" />
+	<property name="shouldDeleteIfExists" value="true" />
+
+	<property name="lineAggregator">
+	  <bean
+		class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+		<property name="delimiter" value="," />
+		<property name="fieldExtractor">
+		  <bean
+			class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+			<property name="names" value="refId, name, age, csvDob, income" />
+		   </bean>
+		</property>
+	   </bean>
+	</property>
+  </bean>
+
